@@ -10,8 +10,9 @@ function App() {
     "구로 맛집",
     "React 공부법",
   ]);
-  let [따봉, 따봉변경] = useState(0);
+  let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -26,35 +27,27 @@ function App() {
       >
         글수정
       </button>
-      <div className="list">
-        <h4>
-          {글제목[0]}
-          <span
-            onClick={() => {
-              따봉변경(따봉 + 1);
-            }}
-          >
-            👍
-          </span>{" "}
-          {따봉}
-        </h4>
-        <p>4월 15일 발행</p>
-      </div>
-
-      <div className="list">
-        <h4>{글제목[1]}</h4>
-        <p>4월 15일 발행</p>
-      </div>
-
-      <div className="list">
-        <h4 onClick={()=>{setModal(!modal)}}>{글제목[2]}</h4>
-        <p>4월 15일 발행</p>
-      </div>
-      
-      {
-        modal == true? <Modal></Modal> : null
-      }
-
+      {글제목.map(function (a, i) {
+        return (
+          <div className="list">
+            <h4 onClick={()=>{setModal(!modal)}}>
+              {글제목[i]}
+              <span
+                onClick={() => {
+                  let copy = [...따봉];
+                  copy[i] = copy[i] + 1;
+                  따봉변경(copy);
+                }}
+              >
+                👍
+              </span>
+              {따봉[i]}
+            </h4>
+            <p>4월 15일 발행</p>
+          </div>
+        );
+      })}
+      {modal == true ? <Modal></Modal> : null}
     </div>
   );
 }
