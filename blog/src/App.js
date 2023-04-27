@@ -12,6 +12,7 @@ function App() {
   ]);
   let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
+  let [title, setTitle] = useState(0);
 
   return (
     <div className="App">
@@ -30,7 +31,7 @@ function App() {
       {글제목.map(function (a, i) {
         return (
           <div className="list">
-            <h4 onClick={()=>{setModal(!modal)}}>
+            <h4 onClick={()=>{setModal(true); setTitle(i)}}>
               {글제목[i]}
               <span
                 onClick={() => {
@@ -47,14 +48,16 @@ function App() {
           </div>
         );
       })}
-      {modal == true ? <Modal 글제목={글제목} 글제목변경={글제목변경}></Modal> : null}
+
+      <input onChange={()=>{}}></input>
+      {modal == true ? <Modal title={title} 글제목={글제목} 글제목변경={글제목변경}></Modal> : null}
     </div>
   );
 }
 function Modal(props) {
   return (
     <div className="modal">
-      <h4>{props.글제목[0]}</h4>
+      <h4>{props.글제목[props.title]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
       <button onClick={()=>{
