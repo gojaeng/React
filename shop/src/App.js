@@ -26,7 +26,7 @@ function App() {
         <Route
           path="/"
           element={
-            <div>
+            <>
               <div className="main-bg"></div>
               <div className="container">
                 <div className="row">
@@ -38,7 +38,7 @@ function App() {
                   })}
                 </div>
               </div>
-            </div>
+            </>
           }
         />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
