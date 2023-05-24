@@ -9,7 +9,9 @@ import axios from 'axios';
 
 function App() {
   let [shoes,setShoes] = useState(data);
+  let [count,setCount] = useState(0);
   let navigate = useNavigate();
+
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -37,11 +39,12 @@ function App() {
                 </div>
               </div>
               <button onClick={()=>{
-                axios.get('https://codingapple1.github.io/shop/data2.json')
+                axios.get(`https://codingapple1.github.io/shop/data${count+2}.json`)
                 .then((결과)=>{
                   let copy = [...shoes, ...결과.data];
                   setShoes(copy);
-                })               
+                  setCount(count+1);
+                })          
                 .catch(()=>{
                   console.log('실패')
                 })
