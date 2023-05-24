@@ -21,7 +21,7 @@ function Detail(props) {
 
   useEffect(()=>{
     if(isNaN(num)==true){
-      alert('숫자만 입력하세요.')
+      console.log('숫자만 입력하세요.')
     }
   },[num])
   return ( 

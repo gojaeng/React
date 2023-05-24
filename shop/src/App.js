@@ -5,9 +5,10 @@ import { useState } from "react";
 import data from "./data.js";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./routes/Detail.js";
+import axios from 'axios';
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes,setShoes] = useState(data);
   let navigate = useNavigate();
   return (
     <div className="App">
@@ -30,14 +31,21 @@ function App() {
               <div className="main-bg"></div>
               <div className="container">
                 <div className="row">
-                  {/* <Card shoes={shoes[0]} i={1}></Card>
-                    <Card shoes={shoes[1]} i={2}></Card>
-                    <Card shoes={shoes[2]} i={3}></Card> */}
                   {shoes.map(function (a, i) {
                     return <Card shoes={shoes[i]} i={i+1}></Card>;
                   })}
                 </div>
               </div>
+              <button onClick={()=>{
+                axios.get('https://codingapple1.github.io/shop/data2.json')
+                .then((결과)=>{
+                  let copy = [...shoes, ...결과.data];
+                  setShoes(copy);
+                })               
+                .catch(()=>{
+                  console.log('실패')
+                })
+              }}>더보기</button>
             </>
           }
         />
