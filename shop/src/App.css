@@ -4,7 +4,10 @@
   background-size: cover;
   background-position: center;
 }
-
+.alert.alert-warning{
+  background-color:lightgoldenrodyellow;
+  color: black;
+}
 .App {
   text-align: center;
 }
