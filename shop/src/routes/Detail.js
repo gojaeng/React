@@ -5,6 +5,14 @@ import { useState } from "react";
 import { cleanup } from "@testing-library/react";
 import { Nav } from "react-bootstrap";
 function Detail(props) {
+  let [Fade2, setFade2] = useState('')
+
+  useEffect(()=>{
+    setTimeout(()=>{setFade2('end')},100)
+    return ()=>{
+      setFade2('')
+    }
+  },[])
   let { id } = useParams();
   let 찾은상품 = props.shoes.find((x) => x.id == id);
   let [탭, 탭변경] = useState(0)
@@ -27,7 +35,7 @@ function Detail(props) {
     }
   }, [num]);
   return (
-    <div className="container">
+    <div className={"container start " + Fade2} >
       {alert == true ? (
         <div className="alert alert-warning">2초 이내 구매시 할인</div>
       ) : null}
@@ -56,6 +64,7 @@ function Detail(props) {
             }}
           />
           <button className="btn btn-danger">주문하기</button>
+          
         </div>
       </div>
       <Nav variant="tabs" defaultActiveKey="link0">
@@ -73,17 +82,18 @@ function Detail(props) {
     </div>
   )
 }
-function TabContent(props){
-  // if(props.탭==0){
-  //   return <div>내용0</div>
-  // }
-  // if(props.탭==1){
-  //   return <div>내용1</div>
-  // }
-  // if(props.탭==2){
-  //   return <div>내용2</div>
-  // }
-  return [<div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][props.탭]
+function TabContent({탭}){
+  let [Fade, setFade] = useState('')
+  useEffect(()=>{
+    let a = setTimeout(()=>{setFade('end')},100)
+    return ()=>{
+      clearTimeout(a)
+      setFade('')
+    }
+  },[탭])
+  return( 
+    <div className={"start " + Fade }>
+      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][탭]}
+    </div>)
 }
-
 export default Detail;
