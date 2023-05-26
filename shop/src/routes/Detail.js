@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { cleanup } from "@testing-library/react";
 import { Nav } from "react-bootstrap";
+import {Context1} from './../App.js' 
+
 function Detail(props) {
   let [Fade2, setFade2] = useState('')
 
@@ -13,6 +15,7 @@ function Detail(props) {
       setFade2('')
     }
   },[])
+
   let { id } = useParams();
   let 찾은상품 = props.shoes.find((x) => x.id == id);
   let [탭, 탭변경] = useState(0)
@@ -64,7 +67,6 @@ function Detail(props) {
             }}
           />
           <button className="btn btn-danger">주문하기</button>
-          
         </div>
       </div>
       <Nav variant="tabs" defaultActiveKey="link0">
@@ -78,12 +80,13 @@ function Detail(props) {
           <Nav.Link onClick={()=>{탭변경(2)}}eventKey="link2">버튼2</Nav.Link>
         </Nav.Item>
       </Nav>
-      <TabContent 탭={탭}/>
+      <TabContent shoes={props.shoes} 탭={탭}/>
     </div>
   )
 }
 function TabContent({탭}){
   let [Fade, setFade] = useState('')
+  let {재고} = useContext(Context1)
   useEffect(()=>{
     let a = setTimeout(()=>{setFade('end')},100)
     return ()=>{
@@ -93,7 +96,7 @@ function TabContent({탭}){
   },[탭])
   return( 
     <div className={"start " + Fade }>
-      {[<div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][탭]}
+      {[<div>{재고}</div>, <div></div>, <div>내용2</div> ][탭]}
     </div>)
 }
 export default Detail;
