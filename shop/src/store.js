@@ -3,7 +3,7 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 let user = createSlice({
   name: "user",
   initialState: { name: "kim", age: 20 },
-  reducer: {
+  reducers: {
     changeName(state) {
       state.name = "park";
     },
