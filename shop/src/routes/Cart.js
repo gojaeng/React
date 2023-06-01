@@ -1,6 +1,9 @@
 import {Table} from 'react-bootstrap'
 
 function Cart() {
+
+  
+
   return (
     <div>
       <Table>
