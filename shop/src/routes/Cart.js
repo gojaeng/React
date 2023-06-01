@@ -1,11 +1,18 @@
-import {Table} from 'react-bootstrap'
+import { Table } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { changeName, increase } from "../store";
 
 function Cart() {
-
-  
-
+  let dispatch = useDispatch();
+  let state = useSelector((state) => {
+    return state;
+    console.log(state)
+  });
   return (
     <div>
+      {state.user.name} {state.user.age} 의 장바구니
+      
+      <button onClick={()=>{dispatch(increase())}}>버튼</button>
       <Table>
         <thead>
           <tr>
@@ -16,12 +23,22 @@ function Cart() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>안녕</td>
-            <td>안녕</td>
-            <td>안녕</td>
-          </tr>
+          {state.cart.map((a, i) => (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td>{state.cart[i].name}</td>
+              <td>{state.cart[i].count}</td>
+              <td>
+                <button
+                  onClick={() => {
+                    dispatch(changeName());
+                  }}
+                >
+                  +
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </div>
