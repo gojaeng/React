@@ -22,10 +22,9 @@ function Detail(props) {
   }, []);
 
   let { id } = useParams();
-  let 찾은상품 = props.shoes.find((x) => x.id == id);
+  //let 찾은상품 = props.shoes.find((x) => x.id == id);
   let [탭, 탭변경] = useState(0);
   let [alert, setalert] = useState(true);
-  // let [num, setNum] = useState("");
 
   useEffect(() => {
     let a = setTimeout(() => {
@@ -36,11 +35,16 @@ function Detail(props) {
     };
   });
 
-  // useEffect(() => {
-  //   if (isNaN(num) == true) {
-  //     console.log("숫자만 입력하세요.");
-  //   }
-  // }, [num]);
+  // useEffect(()=>{
+  //   let 꺼낸거 = localStorage.getItem('watched')
+  //   꺼낸거 = JSON.parse(꺼낸거)
+  //   꺼낸거.push(찾은상품.id)
+  //   꺼낸거 = new Set(꺼낸거)
+  //   꺼낸거 = Array.from(꺼낸거)
+  //   localStorage.setItem('watched',JSON.stringify(꺼낸거));
+  // },[찾은상품])
+
+
   return (
     <div className={"container start " + Fade2}>
       {alert == true ? (
