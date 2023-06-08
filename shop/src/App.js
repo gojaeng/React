@@ -1,14 +1,17 @@
 import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createContext, useEffect, useState } from "react";
+import { lazy, createContext, useEffect, useState, Suspense } from "react";
 import data from "./data.js";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
-import Detail from "./routes/Detail.js";
+// import Detail from "./routes/Detail.js";
 import axios from "axios";
-import Cart from "./routes/Cart.js";
+// import Cart from "./routes/Cart.js";
 import { useQuery } from "@tanstack/react-query";
 export let Context1 = createContext();
+
+const Detail = lazy(() => import("./routes/Detail.js"));
+const Cart = lazy(() => import("./routes/Cart.js"));
 
 function App() {
   let [shoes, setShoes] = useState(data);
@@ -101,9 +104,11 @@ function App() {
         <Route
           path="/detail/:id"
           element={
-            <Context1.Provider value={{ 재고, shoes }}>
-              <Detail shoes={shoes} />
-            </Context1.Provider>
+            <Suspense fallback={<div>로딩중임</div>}>
+              <Context1.Provider value={{ 재고, shoes }}>
+                <Detail shoes={shoes} />
+              </Context1.Provider>
+            </Suspense>
           }
         />
         <Route path="/cart" element={<Cart />} />
@@ -136,6 +141,7 @@ function Event() {
     </div>
   );
 }
+
 function Card(props) {
   return (
     <div className="col-md-4">
