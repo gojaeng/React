@@ -1,23 +1,38 @@
 import { Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { changeName, increase } from "../store/userSlice.js";
-import {changeCount} from "../store.js";
+import { changeCount } from "../store.js";
+import { addItem } from "../store.js";
+import { memo, useMemo, useState } from "react";
+
+let Child = memo(function () {
+  console.log('재랜더링됨');
+  return <div>자식임</div>;
+});
+
+// function 함수(){
+//   return 10억번 돌리는 반복문 
+// }
 
 function Cart() {
+
+  // let result = useMemo(()=>{return 함수()},[state])
   let dispatch = useDispatch();
   let state = useSelector((state) => {
     return state;
   });
+  let [count, setItem] = useState(0);
   return (
     <div>
-      {state.user.name}의 장바구니<br></br>
+      <Child count={count}></Child>
       <button
         onClick={() => {
-          dispatch(increase(100));
+          setItem(count + 1);
         }}
       >
-        버튼
+        +
       </button>
+      {state.user.name}의 장바구니<br></br>
       <Table>
         <thead>
           <tr>
