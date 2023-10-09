@@ -6,8 +6,9 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function App() {
     const [city, setCity] = useState('Loading...');
-    const [location, setLocation] = useState();
     const [ok, setOk] = useState(true);
+    const [days, setDays] = useState([]);
+    const API_KEY = 'bb542442b43673cb197792c8ac2d4994';
     const ask = async () => {
         const { granted } = await Location.requestForegroundPermissionsAsync();
         if (!granted) {
@@ -18,7 +19,13 @@ export default function App() {
         } = await Location.getCurrentPositionAsync({ accuracy: 5 });
         const location = await Location.reverseGeocodeAsync({ latitude, longitude }, { useGoogleMaps: false });
         setCity(location[0].city);
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&explude=alerts&appid=${API_KEY}&units=metric`
+        );
+        const json = await response.json();
+        console.log(json);
     };
+
     useEffect(() => {
         ask();
     }, []);
