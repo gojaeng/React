@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
         fontSize: 60,
     },
     date: {
-        fontSize: 24,
-        marginBottom: 0,
+        fontSize: 32,
+        marginBottom: 10,
         color: 'black',
     },
 });
