@@ -9,6 +9,16 @@ export default function App() {
     const [ok, setOk] = useState(true);
     const [days, setDays] = useState([]);
     const API_KEY = 'bb542442b43673cb197792c8ac2d4994';
+    const getLocalDateTime = (timestamp) => {
+        const date = new Date(timestamp * 1000);
+        const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000); // 로컬 타임으로 변환
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        };
+        return localDate.toLocaleString('ko-KR', options);
+    };
     const getWeather = async () => {
         const { granted } = await Location.requestForegroundPermissionsAsync();
         if (!granted) {
@@ -23,6 +33,7 @@ export default function App() {
             `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&exclude=alerts&appid=${API_KEY}&units=metric`
         );
         const json = await response.json();
+        console.log(json);
         setDays(
             json.list.filter((weather) => {
                 if (weather.dt_txt.includes('00:00:00')) {
@@ -54,7 +65,7 @@ export default function App() {
                 ) : (
                     days.map((day, index) => (
                         <View key={index} style={styles.day}>
-                            <Text style={styles.date}>{new Date(day.dt * 1000).toString().substring(0, 10)}</Text>
+                            <Text style={styles.date}>{getLocalDateTime(day.dt - 1)}</Text>
                             <Text style={styles.temp}>{parseFloat(day.main.temp).toFixed(1)}</Text>
                             <Text style={styles.description}>{day.weather[0].main}</Text>
                             <Text style={styles.tinyText}>{day.weather[0].description}</Text>
