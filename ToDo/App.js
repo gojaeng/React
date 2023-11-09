@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { theme } from './color';
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
     const [working, setWorking] = useState(true);
