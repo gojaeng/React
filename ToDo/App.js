@@ -1,22 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { theme } from './color';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const STORAGE_KEY = '@toDos';
 
 export default function App() {
     const [working, setWorking] = useState(true);
     const [text, setText] = useState('');
     const [toDos, setToDos] = useState({});
+    useEffect(() => {
+        loadToDos();
+    }, []);
     const travel = () => setWorking(false);
     const work = () => setWorking(true);
+    const STORAGE_KEY = '@toDos';
     const onChangeText = (payload) => setText(payload);
-    const addToDo = () => {
+    const addToDo = async () => {
         if (text === '') {
             return;
         }
-        const newToDos = { ...toDos, [Date.now()]: { text, work: working } };
+        const newToDos = {
+            ...toDos,
+            [Date.now()]: { text, working },
+        };
         setToDos(newToDos);
+        await saveToDos(newToDos);
         setText('');
     };
     return (
