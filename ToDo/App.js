@@ -14,14 +14,22 @@ export default function App() {
     }, []);
     const travel = () => setWorking(false);
     const work = () => setWorking(true);
-    const STORAGE_KEY = '@toDos';
     const onChangeText = (payload) => setText(payload);
+    const saveToDos = async (toSave) => {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+    };
+    const loadToDos = async () => {
+        const s = await AsyncStorage.getItem(STORAGE_KEY);
+        setToDos(JSON.parse(s));
+    };
+
     const addToDo = async () => {
         if (text === '') {
             return;
         }
         const newToDos = {
             ...toDos,
+            [Date.now()]: { text, work: working },
             [Date.now()]: { text, working },
         };
         setToDos(newToDos);
@@ -45,15 +53,17 @@ export default function App() {
                     returnKeyType="done"
                     onChangeText={onChangeText}
                     value={text}
-                    placeholder={working ? 'Add a ToDo' : 'Where do you want to go?'}
+                    placeholder={working ? 'What do you have to do?' : 'Where do you want to go?'}
                     style={styles.input}
                 />
                 <ScrollView>
-                    {Object.keys(toDos).map((key) => (
-                        <View style={styles.toDo} key={key}>
-                            <Text style={styles.todoText}>{toDos[key].text}</Text>
-                        </View>
-                    ))}
+                    {Object.keys(toDos).map((key) =>
+                        toDos[key].working === working ? (
+                            <View style={styles.toDo} key={key}>
+                                <Text style={styles.todoText}>{toDos[key].text}</Text>
+                            </View>
+                        ) : null
+                    )}
                 </ScrollView>
             </View>
         </View>
@@ -94,6 +104,6 @@ const styles = StyleSheet.create({
     todoText: {
         color: 'white',
         fontSize: 16,
-        fontWeight: 500,
+        fontWeight: 600,
     },
 });
