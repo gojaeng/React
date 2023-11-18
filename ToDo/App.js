@@ -60,7 +60,7 @@ export default function App() {
     };
 
     const checkToDo = (key) => {
-        setComplete(true);
+        setComplete((prevComplete) => !prevComplete);
     };
 
     return (
@@ -107,7 +107,11 @@ export default function App() {
                                     }}
                                 >
                                     <TouchableOpacity style={{ marginRight: 10 }} onPress={() => checkToDo(key)}>
-                                        <AntDesign name="checksquareo" size={24} color="white" />
+                                        <AntDesign
+                                            name={complete ? 'checksquare' : 'checksquareo'}
+                                            size={24}
+                                            color="white"
+                                        />
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => deleteToDo(key)}>
                                         <Fontisto name="trash" size={18} color="white" />
