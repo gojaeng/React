@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 const STORAGE_KEY = '@toDos';
 
@@ -62,6 +63,16 @@ export default function App() {
     const checkToDo = (key) => {
         setComplete((prevComplete) => !prevComplete);
     };
+    const editToDo = async (key) => {
+        const newToDos = {
+            ...toDos,
+            [Date.now()]: { text, work: working },
+            [Date.now()]: { text, working },
+        };
+        setToDos(newToDos);
+        await saveToDos(newToDos);
+        setText('');
+    };
 
     return (
         <View style={styles.container}>
@@ -112,6 +123,9 @@ export default function App() {
                                             size={24}
                                             color="white"
                                         />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={{ marginRight: 10 }} onPress={() => deleteToDo(key)}>
+                                        <Feather name="edit-3" size={24} color="white" />
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => deleteToDo(key)}>
                                         <Fontisto name="trash" size={18} color="white" />
