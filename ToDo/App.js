@@ -64,14 +64,19 @@ export default function App() {
         setComplete((prevComplete) => !prevComplete);
     };
     const editToDo = async (key) => {
-        const newToDos = {
-            ...toDos,
-            [Date.now()]: { text, work: working },
-            [Date.now()]: { text, working },
-        };
-        setToDos(newToDos);
-        await saveToDos(newToDos);
-        setText('');
+        if (text === '') {
+            return;
+        }
+        const updatedToDos = { ...toDos };
+        if (updatedToDos[key]) {
+            updatedToDos[key].text = text;
+            updatedToDos[key].work = working;
+
+            setToDos(updatedToDos);
+
+            await saveToDos(updatedToDos);
+            setText('');
+        }
     };
 
     return (
@@ -124,7 +129,7 @@ export default function App() {
                                             color="white"
                                         />
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{ marginRight: 10 }} onPress={() => deleteToDo(key)}>
+                                    <TouchableOpacity style={{ marginRight: 10 }} onPress={() => editToDo(key)}>
                                         <Feather name="edit-3" size={24} color="white" />
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => deleteToDo(key)}>
