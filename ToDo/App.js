@@ -4,6 +4,7 @@ import { theme } from './color';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const STORAGE_KEY = '@toDos';
 
@@ -11,6 +12,7 @@ export default function App() {
     const [working, setWorking] = useState(true);
     const [text, setText] = useState('');
     const [toDos, setToDos] = useState({});
+    const [complete, setComplete] = useState(false);
     useEffect(() => {
         loadToDos();
     }, []);
@@ -57,12 +59,23 @@ export default function App() {
         ]);
     };
 
+    const checkToDo = (key) => {
+        setComplete(true);
+    };
+
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
             <View style={styles.header}>
                 <TouchableOpacity onPress={work}>
-                    <Text style={{ ...styles.btnText, color: working ? 'white' : theme.grey }}>Work</Text>
+                    <Text
+                        style={{
+                            ...styles.btnText,
+                            color: working ? 'white' : theme.grey,
+                        }}
+                    >
+                        Work
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={travel}>
                     <Text style={{ ...styles.btnText, color: !working ? 'white' : theme.grey }}>Travel</Text>
@@ -81,10 +94,25 @@ export default function App() {
                     {Object.keys(toDos).map((key) =>
                         toDos[key].working === working ? (
                             <View style={styles.toDo} key={key}>
-                                <Text style={styles.todoText}>{toDos[key].text}</Text>
-                                <TouchableOpacity onPress={() => deleteToDo(key)}>
-                                    <Fontisto name="trash" size={18} color="white" />
-                                </TouchableOpacity>
+                                <Text
+                                    style={{ ...styles.todoText, textDecorationLine: complete ? 'line-through' : null }}
+                                >
+                                    {toDos[key].text}
+                                </Text>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                    }}
+                                >
+                                    <TouchableOpacity style={{ marginRight: 10 }} onPress={() => checkToDo(key)}>
+                                        <AntDesign name="checksquareo" size={24} color="white" />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => deleteToDo(key)}>
+                                        <Fontisto name="trash" size={18} color="white" />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         ) : null
                     )}
