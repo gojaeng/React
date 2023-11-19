@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
 import { theme } from './color';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Fontisto } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -15,6 +15,11 @@ export default function App() {
     const [text, setText] = useState('');
     const [toDos, setToDos] = useState({});
     const [complete, setComplete] = useState(false);
+    const [editingKey, setEditingKey] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+
+    const textInputRef = useRef(null);
+
     useEffect(() => {
         loadToDos();
         loadWorking();
@@ -80,19 +85,28 @@ export default function App() {
     const checkToDo = (key) => {
         setComplete((prevComplete) => !prevComplete);
     };
-    const editToDo = async (key) => {
-        if (text === '') {
+    const editToDo = (key) => {
+        setText(toDos[key].text);
+        setWorking(toDos[key].work);
+        setEditingKey(key);
+        setIsEditing(true);
+    };
+
+    const saveEditedToDo = async () => {
+        if (text === '' || editingKey === null) {
             return;
         }
+
         const updatedToDos = { ...toDos };
-        if (updatedToDos[key]) {
-            updatedToDos[key].text = text;
-            updatedToDos[key].work = working;
+        if (updatedToDos[editingKey]) {
+            updatedToDos[editingKey].text = text;
+            updatedToDos[editingKey].work = working;
 
             setToDos(updatedToDos);
-
             await saveToDos(updatedToDos);
             setText('');
+            setEditingKey(null);
+            setIsEditing(false);
         }
     };
 
