@@ -8,6 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 const STORAGE_KEY = '@toDos';
+const WORKING_KEY = '@working';
 
 export default function App() {
     const [working, setWorking] = useState(true);
@@ -16,7 +17,12 @@ export default function App() {
     const [complete, setComplete] = useState(false);
     useEffect(() => {
         loadToDos();
+        loadWorking();
     }, []);
+    useEffect(() => {
+        saveWorking();
+    }, [working]);
+
     const travel = () => setWorking(false);
     const work = () => setWorking(true);
     const onChangeText = (payload) => setText(payload);
@@ -28,6 +34,17 @@ export default function App() {
         const s = await AsyncStorage.getItem(STORAGE_KEY);
         console.log(s);
         s !== null ? setToDos(JSON.parse(s)) : null;
+    };
+
+    const saveWorking = async () => {
+        await AsyncStorage.setItem(WORKING_KEY, JSON.stringify(working));
+    };
+
+    const loadWorking = async () => {
+        const workingMode = await AsyncStorage.getItem(WORKING_KEY);
+        if (workingMode !== null) {
+            setWorking(JSON.parse(workingMode));
+        }
     };
 
     const addToDo = async () => {
